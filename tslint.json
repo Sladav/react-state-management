@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-react"]
+  "extends": ["tslint-react"],
   "rules": {
     "class-name": true,
     "comment-format": [
