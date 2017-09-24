@@ -54,6 +54,7 @@
     "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "seamless-immutable": "^7.1.2",
     "tslint-react": "^3.2.0"
   }
 }
