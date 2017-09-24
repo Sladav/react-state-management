@@ -7,6 +7,6 @@ import App from './App';
 const shoppingList: string[] = ['apples', 'bananas', 'cherries'];
 
 ReactDOM.render(
-  <App/>,
+  <App list={shoppingList}/>,
   document.getElementById('app')
 );
