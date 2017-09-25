@@ -47,6 +47,8 @@ const withCursors = (WrappedComponent: React.ComponentType) => {
 
   // for debugging purposes, make sure component name shows what it's wrapping
   (ComponentWithCursors as React.ComponentType).displayName = `withCursors(${getDisplayName(WrappedComponent)})`;
+
+  return ComponentWithCursors;
 };
 
 function getDisplayName(WrappedComponent: React.ComponentType) {
