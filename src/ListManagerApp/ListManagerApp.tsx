@@ -1,4 +1,5 @@
 import * as React from 'react';
+import withAppState from '../withAppState';
 
 export interface ListManagerAppProps {
   appState: {
@@ -50,37 +51,7 @@ const ListManager: React.SFC = ({}, {appState}: ListManagerAppProps) => {
 
 ListManager.contextTypes = {appState: React.PropTypes.any};
 
-class ListManagerApp extends React.Component<ListManagerAppProps, ListManagerState> {
-  private appState: AppState;
-  private appActions: AppActions;
-
-  static childContextTypes = {
-      appState: React.PropTypes.object,
-      appActions: React.PropTypes.object
-  };
-
-  constructor(props: ListManagerAppProps) {
-    super(props);
-
-    this.appState = Object.assign({}, props.appState);
-    this.appActions = Object.assign({}, props.appActions);
-  }
-
-  getChildContext(): AppContext {
-    return {
-      appState: this.appState,
-      appActions: this.appActions
-    };
-  }
-
-  render() {
-    const {list} = this.appState;
-
-    return (
-      <ListManager />
-    );
-  }
-}
+const ListManagerApp = withAppState(ListManager);
 
 
 export default ListManagerApp;
