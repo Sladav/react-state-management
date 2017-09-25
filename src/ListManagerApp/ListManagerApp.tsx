@@ -1,5 +1,6 @@
 import * as React from 'react';
 import withAppState from '../withAppState';
+import withConnection from '../withConnection';
 
 export interface ListManagerAppProps {
   appState: {
@@ -31,9 +32,7 @@ export interface AppContext {
 //   placeholder='Add item...'
 //   />
 
-const ListManager: React.SFC = ({}, {appState}: ListManagerAppProps) => {
-  const {list} = appState;
-
+const ListManager: React.SFC<{list: string[]}> = ({list}) => {
   return (
     <div>
       <input placeholder='Add item...'/>
@@ -49,9 +48,8 @@ const ListManager: React.SFC = ({}, {appState}: ListManagerAppProps) => {
   );
 };
 
-ListManager.contextTypes = {appState: React.PropTypes.any};
-
-const ListManagerApp = withAppState(ListManager);
+const ConnectedListManager = withConnection(ListManager);
+const ListManagerApp = withAppState(ConnectedListManager);
 
 
 export default ListManagerApp;

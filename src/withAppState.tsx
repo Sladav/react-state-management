@@ -42,7 +42,7 @@ const withAppState = (AppComponent: React.ComponentType) => {
     }
 
     render() {
-      return <AppComponent/>;
+      return <AppComponent {...this.props}/>;
     }
   }
 
