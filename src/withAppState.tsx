@@ -42,7 +42,7 @@ const withAppState = (AppComponent: React.ComponentType) => {
     }
 
     render() {
-      return <AppComponent {...this.props}/>;
+      return <AppComponent {...Object.assign({}, this.props, {appState: undefined, appActions: undefined})}/>;
     }
   }
 
