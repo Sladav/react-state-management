@@ -32,10 +32,10 @@ export interface AppContext {
 //   placeholder='Add item...'
 //   />
 
-const List: React.SFC<{list: string[]}> = ({list}) => {
+const List: React.SFC<{items: string[]}> = ({items}) => {
   return (
     <ul>
-      {list.map((item => {
+      {items.map((item => {
         return (
           <li key={item}>{item}<button> x </button></li>
         );
@@ -44,14 +44,17 @@ const List: React.SFC<{list: string[]}> = ({list}) => {
   );
 };
 
-const ConnectedList = withConnection(List);
+const ConnectedList = withConnection<{items: string[]}, {[key: string]: any}>(List);
 
 const ListManager: React.SFC<{}> = ({}) => {
   return (
     <div>
       <input placeholder='Add item...'/>
       <button>+</button>
-      <ConnectedList/>
+      <ConnectedList
+        appState={{items: (state: ListManagerAppProps['appState']) => state.list}}
+        appActions={{}}
+      />
     </div>
   );
 };
