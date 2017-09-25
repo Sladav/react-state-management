@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ListManager from './ListManager';
+import ListManagerApp from './ListManagerApp';
 
 export interface AppProps {
   list: string[];
@@ -19,7 +19,7 @@ class App extends React.Component<AppProps, AppState> {
         <button>toggle color</button>
         <br/>
         <br/>
-        <ListManager list={list}/>
+        <ListManagerApp appState={{list: list}} appActions={{}}/>
       </div>
     );
   }
