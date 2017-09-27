@@ -4,9 +4,7 @@ import App from './App';
 
 (Error as any).stackTraceLimit = Infinity;
 
-const shoppingList: string[] = ['apples', 'bananas', 'cherries'];
-
 ReactDOM.render(
-  <App list={shoppingList}/>,
+  <App/>,
   document.getElementById('app')
 );

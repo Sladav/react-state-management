@@ -3,12 +3,12 @@ import Cursor from './util/seamless-immutable-cursor';
 
 interface WithConnectionProps<ComponentState, ComponentActions> {
   appState: {[prop in keyof ComponentState]: (state: {[key: string]: any}) => ComponentState[prop]};
-  appActions: ComponentActions;
+  appActions: {[prop in keyof ComponentActions]: (actions: {[key: string]: any}) => ComponentActions[prop]};
   [propName: string]: any;
 }
 
-const withConnection = <T, U>(WrappedComponent: React.ComponentType) => {
-  class ComponentWithConnection extends React.Component<WithConnectionProps<T, U>, {}> {
+const withConnection = <ComponentState, ComponentActions>(WrappedComponent: React.ComponentType) => {
+  class ComponentWithConnection extends React.Component<WithConnectionProps<ComponentState, ComponentActions>, {}> {
     displayName: string;
 
     static contextTypes = {
@@ -16,7 +16,7 @@ const withConnection = <T, U>(WrappedComponent: React.ComponentType) => {
       appActions: React.PropTypes.object
     };
 
-    constructor(props: WithConnectionProps<T, U>) {
+    constructor(props: WithConnectionProps<ComponentState, ComponentActions>) {
       super(props);
     }
 
@@ -25,8 +25,12 @@ const withConnection = <T, U>(WrappedComponent: React.ComponentType) => {
         return {[key]: getter(this.context.appState)};
       }));
 
+      const appActions = Object.assign({}, ...Object.entries(this.props.appActions).map(([key, getter]: [string, any]) => {
+        return {[key]: getter(this.context.appActions)};
+      }));
+
       // pass data for cursors as props and exclude the actual cursors
-      return <WrappedComponent {...appState} {...this.context.appActions}/>;
+      return <WrappedComponent {...appState} {...appActions}/>;
     }
   }
 
