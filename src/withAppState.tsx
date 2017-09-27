@@ -20,7 +20,7 @@ const withAppState = <AppState, AppActions>(AppComponent: React.ComponentType) =
   class App extends React.Component<WithAppStateProps<AppState, AppActions>, {}> {
     private appState: any;
     private appActions: any;
-    displayName: string;
+    static displayName: string;
 
     static childContextTypes = {
       appState: React.PropTypes.object,
@@ -47,7 +47,7 @@ const withAppState = <AppState, AppActions>(AppComponent: React.ComponentType) =
   }
 
   // for debugging purposes, make sure component name shows what it's wrapping
-  (App as React.ComponentType).displayName = `App(${getDisplayName(AppComponent)})`;
+  App.displayName = `App(${getDisplayName(AppComponent)})`;
 
   return App;
 };

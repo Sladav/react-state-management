@@ -9,7 +9,7 @@ interface WithConnectionProps<ComponentState, ComponentActions> {
 
 const withConnection = <ComponentState, ComponentActions>(WrappedComponent: React.ComponentType) => {
   class ComponentWithConnection extends React.Component<WithConnectionProps<ComponentState, ComponentActions>, {}> {
-    displayName: string;
+    static displayName: string;
 
     static contextTypes = {
       appState: React.PropTypes.object,
@@ -30,7 +30,7 @@ const withConnection = <ComponentState, ComponentActions>(WrappedComponent: Reac
   }
 
   // for debugging purposes, make sure component name shows what it's wrapping
-  (ComponentWithConnection as React.ComponentType).displayName = `withConnection(${getDisplayName(WrappedComponent)})`;
+  ComponentWithConnection.displayName = `withConnection(${getDisplayName(WrappedComponent)})`;
 
   return ComponentWithConnection;
 };
