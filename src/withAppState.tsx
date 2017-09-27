@@ -10,14 +10,14 @@ export interface AppContext {
   appActions: AppActions;
 }
 
-interface WithAppStateProps {
+interface WithAppStateProps<AppState, AppActions> {
   appState: AppState;
   appActions: AppActions;
   [propKey: string]: any;
 }
 
-const withAppState = (AppComponent: React.ComponentType) => {
-  class App extends React.Component<WithAppStateProps, {}> {
+const withAppState = <AppState, AppActions>(AppComponent: React.ComponentType) => {
+  class App extends React.Component<WithAppStateProps<AppState, AppActions>, {}> {
     private appState: any;
     private appActions: any;
     displayName: string;
@@ -27,7 +27,7 @@ const withAppState = (AppComponent: React.ComponentType) => {
       appActions: React.PropTypes.object
     };
 
-    constructor(props: WithAppStateProps) {
+    constructor(props: WithAppStateProps<AppState, AppActions>) {
       super(props);
 
       this.appState = Object.assign({}, props.appState);

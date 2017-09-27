@@ -53,7 +53,7 @@ const ConnectedItemInput = withConnection<ItemData, ItemActions>(ItemInput);
 interface ListManagerData {
   list: string[];
   color?: string;
-  currentItem: string;
+  currentItem?: string;
 }
 interface ListManagerActions {
   updateCurrentItem: (newCurrentItem: string) => void;
@@ -78,7 +78,7 @@ const ListManager: React.SFC<ListManagerProps> = ({}) => {
   );
 };
 
-const ListManagerApp = withAppState(ListManager);
+const ListManagerApp = withAppState<ListManagerData, ListManagerActions>(ListManager);
 
 
 export {
