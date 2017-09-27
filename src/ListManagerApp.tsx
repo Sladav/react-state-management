@@ -66,13 +66,13 @@ const ListManager: React.SFC<ListManagerProps> = ({}) => {
   return (
     <div>
       <ConnectedItemInput
-        appState={{}}
-        appActions={{onUpdateItem: (actions: ListManagerActions) => actions.updateCurrentItem}}
+        appState={(state: ListManagerData) => ({})}
+        appActions={(actions: ListManagerActions) => ({onUpdateItem: actions.updateCurrentItem})}
       />
       <button>+</button>
       <ConnectedList
-        appState={{items: (state: ListManagerData) => state.list}}
-        appActions={{}}
+        appState={(state: ListManagerData) => ({items: state.list})}
+        appActions={(actions: ListManagerActions) => ({})}
       />
     </div>
   );

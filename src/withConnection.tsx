@@ -2,8 +2,8 @@ import * as React from 'react';
 import Cursor from './util/seamless-immutable-cursor';
 
 interface WithConnectionProps<ComponentState, ComponentActions> {
-  appState: {[prop in keyof ComponentState]: (state: {[key: string]: any}) => ComponentState[prop]};
-  appActions: {[prop in keyof ComponentActions]: (actions: {[key: string]: any}) => ComponentActions[prop]};
+  appState: (state: {[key: string]: any}) => {[prop in keyof ComponentState]: ComponentState[prop]};
+  appActions: (actions: {[key: string]: any}) => {[prop in keyof ComponentActions]: ComponentActions[prop]};
   [propName: string]: any;
 }
 
@@ -21,13 +21,8 @@ const withConnection = <ComponentState, ComponentActions>(WrappedComponent: Reac
     }
 
     render() {
-      const appState = Object.assign({}, ...Object.entries(this.props.appState).map(([key, getter]: [string, any]) => {
-        return {[key]: getter(this.context.appState)};
-      }));
-
-      const appActions = Object.assign({}, ...Object.entries(this.props.appActions).map(([key, getter]: [string, any]) => {
-        return {[key]: getter(this.context.appActions)};
-      }));
+      const appState = this.props.appState(this.context.appState);
+      const appActions = this.props.appActions(this.context.appActions);
 
       // pass data for cursors as props and exclude the actual cursors
       return <WrappedComponent {...appState} {...appActions}/>;
