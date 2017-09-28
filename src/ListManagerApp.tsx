@@ -35,17 +35,21 @@ interface ItemData {
   value?: string;
 }
 interface ItemActions {
-  onUpdateItem: (newItem: string) => void;
+  onUpdateItem: (proposedItem: string) => void;
+  addNewItem: (newItem: string) => void;
 }
 type ItemProps = ItemData & ItemActions;
 
-const ItemInput: React.SFC<ItemProps> = ({value, onUpdateItem}) => {
+const ItemInput: React.SFC<ItemProps> = ({value, onUpdateItem, addNewItem}) => {
   return (
-    <input
-      placeholder='Add item...'
-      value={value}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) => onUpdateItem(event.target.value)}
-    />
+    <span>
+      <input
+        placeholder='Add item...'
+        value={value}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => onUpdateItem(event.target.value)}
+      />
+      <button onClick={(event: React.SyntheticEvent<HTMLButtonElement>) => addNewItem(value)}>+</button>
+    </span>
   );
 };
 const ConnectedItemInput = withConnection<ItemData, ItemActions>(ItemInput);
@@ -57,7 +61,7 @@ interface ListManagerData {
 }
 interface ListManagerActions {
   updateCurrentItem: (newCurrentItem: string) => void;
-  addNewItem?: (newItem: string) => void;
+  addNewItem: (newItem: string) => void;
   removeItem?: (itemToRemove: string) => void;
 }
 type ListManagerProps = ListManagerData & ListManagerActions;
@@ -67,9 +71,8 @@ const ListManager: React.SFC<ListManagerProps> = ({}) => {
     <div>
       <ConnectedItemInput
         appState={(state: ListManagerData) => ({})}
-        appActions={(actions: ListManagerActions) => ({onUpdateItem: actions.updateCurrentItem})}
+        appActions={(actions: ListManagerActions) => ({onUpdateItem: actions.updateCurrentItem, addNewItem: actions.addNewItem})}
       />
-      <button>+</button>
       <ConnectedList
         appState={(state: ListManagerData) => ({items: state.list})}
         appActions={(actions: ListManagerActions) => ({})}

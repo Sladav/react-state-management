@@ -18,9 +18,13 @@ class App extends React.Component<{}, ListManagerData> {
     this.setState({currentItem: newCurrentItem});
   };
 
+  addNewItem = (newItem: string) => {
+    this.setState({list: [...this.state.list, newItem]});
+  };
+
   render() {
     const {list, currentItem} = this.state;
-    const {updateCurrentItem} = this;
+    const {updateCurrentItem, addNewItem} = this;
 
     console.log(currentItem);
 
@@ -29,7 +33,7 @@ class App extends React.Component<{}, ListManagerData> {
         <button>toggle color</button>
         <br/>
         <br/>
-        <ListManagerApp appState={{list}} appActions={{updateCurrentItem}}/>
+        <ListManagerApp appState={{list}} appActions={{updateCurrentItem, addNewItem}}/>
       </div>
     );
   }
