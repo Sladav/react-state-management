@@ -1,26 +1,25 @@
 import * as React from 'react';
 import Cursor from './util/seamless-immutable-cursor';
 
-
 type Action = (...args: any[]) => void;
-type AppState = {[key: string]: any};
-type AppActions = {[key: string]: Action};
+type ActionsOnly = {[key: string]: Action};
 
-export interface AppContext {
-  appState: AppState;
-  appActions: AppActions;
+export interface AppContext<AppData, AppActions> {
+  appState: {[prop in keyof AppData]: Cursor};
+  appActions: AppActions & ActionsOnly;
 }
 
 interface WithAppStateProps<AppState, AppActions> {
   appState: AppState;
-  appActions: AppActions;
+  appActions: (rootCursor: any) => AppActions;
   [propKey: string]: any;
 }
 
-const withAppState = <AppState, AppActions>(AppComponent: React.ComponentType) => {
-  class App extends React.Component<WithAppStateProps<AppState, AppActions>, {}> {
-    private appState: any;
-    private appActions: any;
+const withAppState = <AppData, AppActions>(AppComponent: React.ComponentType) => {
+  class App extends React.Component<WithAppStateProps<AppData, AppActions>, {}> {
+    private appState: AppContext<AppData, AppActions>['appState'];
+    private appActions: AppContext<AppData, AppActions>['appActions'];
+    private rootAppCursor: Cursor;
     static displayName: string;
 
     static childContextTypes = {
@@ -28,14 +27,21 @@ const withAppState = <AppState, AppActions>(AppComponent: React.ComponentType) =
       appActions: React.PropTypes.object
     };
 
-    constructor(props: WithAppStateProps<AppState, AppActions>) {
+    constructor(props: WithAppStateProps<AppData, AppActions & ActionsOnly>) {
       super(props);
 
-      this.appState = Object.assign({}, props.appState);
-      this.appActions = Object.assign({}, props.appActions);
+      this.rootAppCursor = new Cursor(props.appState);
+      (window as any).rootCursor = this.rootAppCursor;
+      this.appState = Object.assign({},
+        ...Object.entries(props.appState).map(([key, prop]: [keyof AppData, any]) => {
+            return {[key]: this.rootAppCursor.refine([key])};
+          })
+      );
+
+      this.appActions = Object.assign({}, props.appActions(this.rootAppCursor));
     }
 
-    getChildContext(): AppContext {
+    getChildContext(): AppContext<AppData, AppActions> {
       return {
         appState: this.appState,
         appActions: this.appActions
@@ -57,4 +63,6 @@ function getDisplayName(AppComponent: React.ComponentType) {
   return AppComponent.displayName || AppComponent.name || 'Component';
 }
 
-export default withAppState;
+export {
+  withAppState
+};

@@ -4,16 +4,18 @@ import * as React from 'react';
 interface ListData {
   items: string[];
 }
-interface ListActions {}
+interface ListActions {
+  removeItem: (removedItem: string) => void;
+}
 type ListProps = ListData & ListActions;
 
 /** Presentational Component */
-const List: React.SFC<ListProps> = ({items}) => {
+const List: React.SFC<ListProps> = ({items, removeItem}) => {
   return (
     <ul>
       {items.map((item => {
         return (
-          <li key={item}>{item}<button> x </button></li>
+          <li key={item}>{item}<button onClick={(event: React.SyntheticEvent<HTMLButtonElement>) => removeItem(item)}> x </button></li>
         );
       }))}
     </ul>

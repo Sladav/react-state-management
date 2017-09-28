@@ -2,7 +2,7 @@ import * as React from 'react';
 
 /** Type Definitions */
 interface ItemData {
-  value?: string;
+  value: string;
 }
 interface ItemActions {
   onUpdateItem: (proposedItem: string) => void;

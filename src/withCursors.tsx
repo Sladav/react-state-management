@@ -22,10 +22,15 @@ const withCursors = (WrappedComponent: React.ComponentType) => {
       Object.entries(this.cursors).map(([key, cursor]: [string, Cursor]) => {
         // Create change listener unique to current cursor
         const changeListener = (rootNextData: any) => {
-          this.setState({[key]: cursor.path.reduce((data: any, path: string) => data[path], rootNextData)});
+          this.setState({
+            [key]: cursor.path.reduce(
+              (data: any, path: string) => data[path], rootNextData
+            )
+          });
         };
 
         this.changeListeners[key] = changeListener;
+        cursor.onChange(changeListener);
 
         // set initial state for each cursor
         this.setState({[key]: cursor.data});
