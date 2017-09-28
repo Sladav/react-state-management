@@ -25,6 +25,7 @@ type ListManagerProps = ListManagerData & ListManagerActions;
 interface ListManagerApiProps {}
 
 /** Presentational Component */
+// TODO: BETTER NAMES!! appState -> mapPropsToState (or something like that)
 const ListManager: React.SFC<ListManagerProps> = ({}) => {
   return (
     <div style={{border: '1px solid cornflowerblue', margin: '15px', padding: '5px'}}>
