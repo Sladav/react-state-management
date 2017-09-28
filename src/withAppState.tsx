@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Cursor from './util/seamless-immutable-cursor';
 
+
 type Action = (...args: any[]) => void;
 type AppState = {[key: string]: any};
 type AppActions = {[key: string]: Action};
